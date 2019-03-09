@@ -9,7 +9,8 @@ class ConverthBar extends React.Component {
     symbols: {},
     originalSymbol: '',
     convertedSymbol: '',
-    amount: 1
+    amount: 1,
+    showError: false
   };
 
   componentWillMount = async () => {
@@ -42,7 +43,13 @@ class ConverthBar extends React.Component {
       }
     });
 
-    this.calculateConversion(response.data.rates);
+    if (this.state.amount) {
+      this.calculateConversion(response.data.rates);
+    } else {
+      this.setState({
+        showError: true
+      });
+    }
   }
 
   calculateConversion(rates) {
@@ -55,7 +62,9 @@ class ConverthBar extends React.Component {
   onAmountChanged = event => {
     event.preventDefault();
     this.setState({
-      amount: event.target.value
+      amount: event.target.value,
+      showError: false,
+      result: null
     });
   }
 
@@ -65,6 +74,7 @@ class ConverthBar extends React.Component {
     const selected = event.target.name === 'original' ? 'originalSymbol' : 'convertedSymbol'
 
     this.setState({
+      result: null,
       [selected]: event.target.value
     });
   }
@@ -93,13 +103,16 @@ class ConverthBar extends React.Component {
             <button onClick={this.onFormSubmit} className="positive ui button">Convert</button>
           </div>
         </form>
-        {/* <div className="ui divider"></div> */}
         {this.state.result && 
           <div className="ui message">
             <p>
               {`${this.state.symbols[this.state.originalSymbol]} is ${this.state.result} ${this.state.symbols[this.state.convertedSymbol]}`}
             </p>
           </div>}
+          {this.state.showError &&
+            <div className="ui error message">
+              <p>Conversion amount must be a positive number</p>
+            </div>}
       </div>
     );
   }
