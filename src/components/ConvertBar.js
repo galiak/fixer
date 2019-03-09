@@ -63,7 +63,7 @@ class ConverthBar extends React.Component {
 
   render() {
     return (
-      <div className="search-bar ui segment">
+      <div className="convert-bar ui segment">
         <form className="ui form" onSubmit={this.onFormSubmit} >
           <div className="fields">
             <div className="inline field">
@@ -77,8 +77,13 @@ class ConverthBar extends React.Component {
             <button onClick={this.onFormSubmit} className="positive ui button">Convert</button>
           </div>
         </form>
-        <div className="ui divider"></div>
-        {this.state.result}
+        {/* <div className="ui divider"></div> */}
+        {this.state.result && 
+          <div className="ui message">
+            <p>
+              {`${this.state.symbols[this.state.originalSymbol]} is ${this.state.result} ${this.state.symbols[this.state.convertedSymbol]}`}
+            </p>
+          </div>}
       </div>
     );
   }
