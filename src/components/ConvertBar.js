@@ -8,7 +8,8 @@ class ConverthBar extends React.Component {
   state = {
     symbols: {},
     originalSymbol: '',
-    convertedSymbol: ''
+    convertedSymbol: '',
+    amount: 1
   };
 
   componentWillMount = async () => {
@@ -45,9 +46,16 @@ class ConverthBar extends React.Component {
   }
 
   calculateConversion(rates) {
-    const conversion = rates[this.state.originalSymbol] * (1 / rates[this.state.convertedSymbol]);
+    const conversion = (this.state.amount * rates[this.state.originalSymbol]) * (1 / rates[this.state.convertedSymbol]);
     this.setState({
       result: conversion.toFixed(3)
+    });
+  }
+
+  onAmountChanged = event => {
+    event.preventDefault();
+    this.setState({
+      amount: event.target.value
     });
   }
 
@@ -68,6 +76,14 @@ class ConverthBar extends React.Component {
           <div className="fields">
             <div className="inline field">
               <label className="ui right pointing label">Convert</label>
+              <input 
+                className="mini" 
+                type="number" 
+                name="amount" 
+                onChange={this.onAmountChanged} 
+                value={this.state.amount}
+              />
+              <span className="text">x</span>
               <SymbolsList onChangeHandler={this.onInputChange} name="original" symbols={this.state.symbols} />
             </div>
             <div className="inline field">
