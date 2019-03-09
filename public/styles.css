@@ -1,0 +1,10 @@
+.ui.segment:first-child {
+  margin-top: 1em;
+}
+.ui.form .fields {
+  margin: 0;
+}
+
+.ui.form .fields>.field{
+  padding-left: 0;
+}
